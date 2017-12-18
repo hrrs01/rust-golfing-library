@@ -1,0 +1,6 @@
+[package]
+name = "GolfLibrary"
+version = "0.1.0"
+authors = ["hrrs01 <haavard.hn@gmail.com>"]
+
+[dependencies]
