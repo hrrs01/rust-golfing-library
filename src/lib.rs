@@ -54,6 +54,21 @@ pub mod strings {
 
         }
 
+
+    }
+
+
+
+
+}
+
+pub mod vecs {
+    pub trait VecExt {
+        fn find(&mut self, s: &str) -> usize;
+    }
+
+    impl<T> VecExt for Vec<T> where T: String{
+
     }
 
 }
