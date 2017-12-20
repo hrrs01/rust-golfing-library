@@ -50,7 +50,7 @@ mod tests {
         //assert_eq!('e', test.pop_f());
         //assert_eq!("llo world", &test);
         test.after_each(" ");
-        assert_eq!(String::from("5").int::<i32>(), 5);
+        assert_eq!("olleh", "hello".rev());
 
 
 
@@ -84,15 +84,18 @@ pub mod nums {
 pub mod strings {
     use nums::Num;
     pub trait StringExt {
-        //simple reverse pop function
+        //simple reverse pop function, note: Does not replace original, to be compatible with both &str and String
         fn pop_f(&mut self) -> String;
         //function adding char after each char in string
         // Filter support to be added?
         fn after_each(&mut self, c: &str) -> String;
 
-        // prints a string, forwards and backwards ?: replace with .rev()?
 
-        fn reflect(&mut self);
+        //reverses a string
+        fn rev(&self) -> String;
+
+        // returns a string, forwards and backwards ?: replace with .rev()?
+        fn reflect(&mut self) -> String;
 
         // Parse string to int?
         fn int<T>(&mut self) -> T where T: Num, <T as ::std::str::FromStr>::Err : ::std::fmt::Debug;
@@ -102,7 +105,7 @@ pub mod strings {
         fn pop_f(&mut self) -> String {
             let mut x: String = self.clone();
             x.remove(0);
-            *self = x.clone();
+
             x
         }
 
@@ -117,21 +120,26 @@ pub mod strings {
                 t.push(e);
                 t.push_str(c);
             }
-            *self = t.clone();
+
             t
 
         }
-        fn reflect(&mut self){
-            println!("{}{}", self,self.chars().rev().collect::<String>());
+        fn rev(&self) -> String{
+            self.chars().rev().collect::<String>()
+        }
+
+        fn reflect(&mut self) -> String{
+            let mut temp = self.clone();
+            format!("{}{}", self, temp.rev())
         }
 
 
     }
-    impl StringExt for &'static str {
+    impl StringExt for str {
         fn pop_f(&mut self) -> String {
             // does not acctually modify string :? solve with T generic type for return?
             let mut t = self.to_string();
-            let x = t.remove(0);
+            t.remove(0);
             t
 
         }
@@ -150,8 +158,12 @@ pub mod strings {
             t
 
         }
-        fn reflect(&mut self){
-            println!("{}{}", self,self.chars().rev().collect::<String>());
+        fn rev(&self) -> String{
+            self.to_string().chars().rev().collect::<String>()
+        }
+
+        fn reflect(&mut self) -> String{
+            format!("{}{}", self.to_string(),self.rev())
         }
     }
 }
