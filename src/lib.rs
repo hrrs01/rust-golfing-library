@@ -27,8 +27,8 @@ pub mod g_macro {
     }
     #[macro_export]
     macro_rules! str {
-        ($var_name:ident, $value:expr) => {
-            let $varname = String::from($value);
+        ($value:expr) => {
+            $value.to_string()
         }
     }
 
@@ -42,7 +42,7 @@ pub mod g_macro {
 mod tests {
     #[test]
     fn it_works() {
-        use strings::StringExt;
+        use str::StringExt;
         use vecs::VecExt;
         use nums::*;
         let mut test = String::from("Hello world");
@@ -50,7 +50,7 @@ mod tests {
         //assert_eq!('e', test.pop_f());
         //assert_eq!("llo world", &test);
         test.after_each(" ");
-        assert_eq!("olleh", "hello".rev());
+        assert_eq!("olleh", str!("hello").rev());
 
 
 
@@ -81,7 +81,7 @@ pub mod nums {
 }
 
 
-pub mod strings {
+pub mod str {
     use nums::Num;
     pub trait StringExt {
         //simple reverse pop function, note: Does not replace original, to be compatible with both &str and String
@@ -101,6 +101,8 @@ pub mod strings {
         fn int<T>(&mut self) -> T where T: Num, <T as ::std::str::FromStr>::Err : ::std::fmt::Debug;
 
     }
+
+
     impl StringExt for String {
         fn pop_f(&mut self) -> String {
             let mut x: String = self.clone();
@@ -135,37 +137,7 @@ pub mod strings {
 
 
     }
-    impl StringExt for str {
-        fn pop_f(&mut self) -> String {
-            // does not acctually modify string :? solve with T generic type for return?
-            let mut t = self.to_string();
-            t.remove(0);
-            t
 
-        }
-
-        fn int<T>(&mut self) -> T where T: Num, <T as ::std::str::FromStr>::Err : ::std::fmt::Debug{
-            self.parse::<T>().expect("Not supported type")
-        }
-
-        fn after_each(&mut self, c: &str ) -> String{
-            let mut t: String = String::new();
-
-            for e in self.chars() {
-                t.push(e);
-                t.push_str(c);
-            }
-            t
-
-        }
-        fn rev(&self) -> String{
-            self.to_string().chars().rev().collect::<String>()
-        }
-
-        fn reflect(&mut self) -> String{
-            format!("{}{}", self.to_string(),self.rev())
-        }
-    }
 }
 
 pub mod vecs {
