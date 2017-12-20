@@ -102,7 +102,7 @@ pub mod strings {
         fn pop_f(&mut self) -> String {
             let mut x: String = self.clone();
             x.remove(0);
-            *self = t.clone();
+            *self = x.clone();
             x
         }
 
